@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TasteOfJoy</title>
+    
+    <script>
+        // KIỂM TRA QUYỀN ADMIN (CHỐNG KÝ TỰ ẨN)
+        (function() {
+            try {
+                const userStr = localStorage.getItem('currentUser');
+                if (!userStr) {
+                    alert("Vui lòng đăng nhập tài khoản Admin!");
+                    window.location.href = './login/login.html';
+                    return;
+                }
+
+                const user = JSON.parse(userStr);
+                if (user.role !== 1) { 
+                    alert("Cảnh báo: Bạn không có quyền truy cập khu vực này!");
+                    window.location.href = ''; 
+                }
+            } catch (e) {
+                console.error("Lỗi kiểm tra quyền:", e);
+                window.location.href = '';
+            }
+        })();
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff7e5f;
+            --secondary: #feb47b;
+            --dark: #333;
+            --light: #f4f4f9;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --info: #2196F3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #eef2f5; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background-color: var(--dark); color: white; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; text-align: center; background: #222; font-size: 1.5rem; font-weight: bold; color: var(--primary); border-bottom: 1px solid #444; }
+        .menu-btn { padding: 15px 20px; border: none; background: none; color: white; text-align: left; font-size: 1.1rem; cursor: pointer; transition: 0.3s; border-left: 4px solid transparent; }
+        .menu-btn:hover, .menu-btn.active { background-color: #444; border-left: 4px solid var(--primary); }
+        .menu-btn i { margin-right: 10px; width: 20px; text-align: center; }
+        
+        /* Main Content */
+        .main-content { flex: 1; overflow-y: auto; padding: 20px; }
+        .section-header { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { color: var(--dark); font-size: 1.8rem; }
+        
+        /* Sub-tabs */
+        .sub-tabs { margin-bottom: 20px; border-bottom: 2px solid #ddd; display: flex; }
+        .sub-tab-btn { padding: 10px 20px; background: none; border: none; font-size: 1rem; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: 0.3s; }
+        .sub-tab-btn.active { border-bottom-color: var(--primary); color: var(--primary); font-weight: bold; }
+        .sub-view { display: none; }
+        .sub-view.active { display: block; animation: fadeIn 0.4s; }
+
+        /* Card & Forms */
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; color: #555; }
+        .form-group input, .form-group textarea, .form-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        .full-width { grid-column: span 2; }
+        
+        /* Buttons */
+        .btn { padding: 10px 15px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--secondary); }
+        .btn-success { background: var(--success); }
+        .btn-danger { background: var(--danger); }
+        .btn-info { background: var(--info); }
+        .btn-secondary { background: #888; }
+        
+        /* Tables & Pagination */
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; }
+        thead { background-color: var(--dark); color: white; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        tbody tr:hover { background-color: #f9f9f9; }
+        .action-btns button { margin-right: 5px; padding: 5px 10px; font-size: 0.8rem; }
+        
+        .pagination { display: flex; justify-content: center; margin-top: 20px; gap: 5px; }
+        .page-btn { padding: 8px 12px; border: 1px solid #ccc; background: white; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .page-btn:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+
+        /* Panels */
+        .panel { display: none; }
+        .panel.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Badge */
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: white; }
+        .badge.pending { background: orange; }
+        .badge.shipping { background: var(--info); }
+        .badge.completed { background: var(--success); }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            TasteOfJoy Admin
+        </div>
+        <button class="menu-btn active" onclick="switchTab('products', event)"><i class="fas fa-ice-cream"></i> Sản Phẩm</button>
+        <button class="menu-btn" onclick="switchTab('orders', event)"><i class="fas fa-shopping-cart"></i> Đơn Hàng</button>
+        <button class="menu-btn" onclick="switchTab('users', event)"><i class="fas fa-users"></i> Người Dùng</button>
+        <button class="menu-btn" onclick="window.location.href='/IceCreamShop_Web'" style="margin-top: auto;"><i class="fas fa-home"></i> Về trang Web</button>
+    </aside>
+
+    <main class="main-content">
+        
+        <section id="products-panel" class="panel active">
+            <div class="section-header">
+                <h2>Quản lý Sản Phẩm</h2>
+                <button class="btn btn-info" onclick="loadProducts()"><i class="fas fa-sync"></i> Tải lại dữ liệu</button>
+            </div>
+            
+            <div class="sub-tabs">
+                <button class="sub-tab-btn active" onclick="switchSubTab('product-list')">Danh sách Sản phẩm</button>
+                <button class="sub-tab-btn" onclick="switchSubTab('product-form')">Thêm / Sửa Sản phẩm</button>
+            </div>
+
+            <div id="product-list-view" class="sub-view active">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>Hình ảnh</th><th>Tên món</th><th>Mô tả ngắn</th><th>Giá bán</th><th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-tbody">
+                        </tbody>
+                </table>
+                <div class="pagination" id="product-pagination"></div>
+            </div>
+
+            <div id="product-form-view" class="sub-view">
+                <div class="card">
+                    <h3 style="margin-bottom: 15px; color: var(--dark);" id="form-title">Thêm Món Kem Mới</h3>
+                    <input type="hidden" id="pro-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label>Tên món kem:</label><input type="text" id="pro-name" placeholder="Ví dụ: Vanilla Box"></div>
+                        <div class="form-group"><label>Link ảnh (URL):</label><input type="text" id="pro-img" placeholder="https://..."></div>
+                        <div class="form-group"><label>Giá bán (VNĐ):</label><input type="number" id="pro-price" placeholder="380000"></div>
+                        <div class="form-group"><label>Giá gốc (VNĐ):</label><input type="number" id="pro-old-price" placeholder="500000"></div>
+                        <div class="form-group full-width"><label>Mô tả:</label><textarea id="pro-desc" rows="2" placeholder="Mô tả hương vị..."></textarea></div>
+                        <div class="form-group full-width"><label>Dị ứng (JSON):</label><input type="text" id="pro-allergies" placeholder='["nuts", "dairy"]' value='[]'></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveProduct()">Lưu Sản Phẩm</button>
+                    <button class="btn btn-secondary" onclick="clearProductForm()">Nhập mới lại</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="orders-panel" class="panel">
+            <div class="section-header">
+                <h2>Quản lý Đơn Hàng</h2>
+                <button class="btn btn-info" onclick="loadOrders()"><i class="fas fa-sync"></i> Làm mới</button>
+            </div>
+            <table>
+                <thead><tr><th>Mã Đơn</th><th>Khách hàng</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+                <tbody id="order-tbody"></tbody>
+            </table>
+        </section>
+
+        <section id="users-panel" class="panel">
+            <div class="section-header">
+                <h2>Quản lý Người Dùng</h2>
+            </div>
+            
+            <div class="card">
+                <h3 style="margin-bottom: 15px; color: var(--dark);" id="user-form-title">Thêm Người Dùng Mới</h3>
+                <input type="hidden" id="user-id">
+                <div class="form-grid">
+                    <div class="form-group"><label>Họ và Tên:</label><input type="text" id="user-fullname" placeholder="Nguyễn Văn A"></div>
+                    <div class="form-group"><label>Email:</label><input type="email" id="user-email" placeholder="abc@gmail.com"></div>
+                    <div class="form-group"><label>Mật khẩu:</label><input type="text" id="user-password" placeholder="Mật khẩu (nên mã hóa sau này)"></div>
+                    <div class="form-group">
+                        <label>Phân quyền (Role):</label>
+                        <select id="user-role">
+                            <option value="0">Khách hàng (0)</option>
+                            <option value="1">Quản trị viên - Admin (1)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveUser()">Lưu Người Dùng</button>
+                <button class="btn btn-secondary" onclick="clearUserForm()">Hủy bỏ</button>
+            </div>
+
+            <table>
+                <thead><tr><th>ID</th><th>Họ Tên</th><th>Email</th><th>Phân quyền</th><th>Thao tác</th></tr></thead>
+                <tbody id="user-tbody"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script src="./assets/admin.js"></script>
+</body>
+</html>

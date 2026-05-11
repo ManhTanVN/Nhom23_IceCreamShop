@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ của tôi - TasteOfJoy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+        .profile-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 100%; max-width: 400px; text-align: center; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid #ff7e5f; margin-bottom: 15px; }
+        .user-name { color: #333; font-size: 1.8rem; margin-bottom: 5px; }
+        .user-role { color: #888; font-size: 1rem; margin-bottom: 25px; font-weight: bold; }
+        .role-badge { background: #ff7e5f; color: white; padding: 3px 10px; border-radius: 15px; font-size: 0.8rem; vertical-align: middle; }
+        
+        .menu-list { display: flex; flex-direction: column; gap: 10px; }
+        .menu-list a { padding: 12px; text-decoration: none; color: #555; background: #f9f9f9; border-radius: 8px; font-weight: bold; transition: 0.3s; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+        .menu-list a:hover { background: #ff7e5f; color: white; border-color: #ff7e5f; }
+        .menu-list a i { width: 25px; text-align: center; }
+        
+        .back-home { display: inline-block; margin-top: 25px; color: #888; text-decoration: none; font-size: 0.9rem; transition: 0.2s; }
+        .back-home:hover { color: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Avatar" class="avatar">
+        <h2 class="user-name" id="profile-name">Đang tải...</h2>
+        <p class="user-role" id="profile-role">Khách hàng</p>
+        
+        <div class="menu-list">
+            <a href="edit-profile.html"><i class="fas fa-user-edit"></i> Chỉnh sửa thông tin</a>
+            <a href="change-password.html"><i class="fas fa-key"></i> Đổi mật khẩu</a>
+            <a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </div>
+        
+        <a href="../" class="back-home"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+    </div>
+
+    <script>
+        // 1. Bảo vệ trang: Kiểm tra xem đã đăng nhập chưa
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            alert("Bạn chưa đăng nhập!");
+            window.location.href = '../login/login.html';
+        } else {
+            // 2. Load thông tin lên giao diện
+            const user = JSON.parse(userStr);
+            document.getElementById('profile-name').innerText = user.fullname;
+            
+            if (user.role === 1) {
+                document.getElementById('profile-role').innerHTML = '<span class="role-badge"><i class="fas fa-crown"></i> Quản trị viên</span>';
+            } else {
+                document.getElementById('profile-role').innerText = 'Khách hàng thân thiết';
+            }
+        }
+
+        // 3. Đăng xuất
+        function handleLogout() {
+            if(confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../';
+            }
+        }
+    </script>
+</body>
+</html>

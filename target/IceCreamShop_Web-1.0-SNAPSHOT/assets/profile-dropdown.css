@@ -1,0 +1,23 @@
+/* --- CSS CHO DROPDOWN PROFILE --- */
+.user-auth-section { position: relative; margin-left: 15px; display: flex; align-items: center; }
+.guest-menu a { max-height: 40px; display:inline-block; padding:8px 15px; text-decoration:none; background: #ff7e5f; color: white; border-radius: 5px; margin-left: 5px; font-size: 1.2rem; font-weight: bold;}
+.guest-menu a:hover { background: #e06c50; }
+
+.user-profile { position: relative; cursor: pointer; z-index: 1000; }
+.profile-trigger { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 25px; background: #f4f4f9; border: 1px solid #ddd; transition: 0.3s; }
+.profile-trigger:hover { background: #e0e0e0; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.profile-trigger span { font-size: 1.3rem; font-weight: bold; color: #333; }
+.profile-trigger i { font-size: 1.1rem; color: #666; }
+
+.profile-dropdown {
+    position: absolute; top: 120%; right: 0; background: white; width: 220px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15); border-radius: 8px;
+    display: flex; flex-direction: column; overflow: hidden;
+    opacity: 0; visibility: hidden; transform: translateY(15px); transition: all 0.3s ease;
+}
+.profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+.profile-dropdown a { padding: 12px 15px; text-decoration: none; color: #333; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+.profile-dropdown a:hover { background: #ff7e5f; color: white; }
+.profile-dropdown a i { width: 20px; text-align: center; }
+.profile-dropdown hr { border: none; border-top: 1px solid #eee; margin: 0; }

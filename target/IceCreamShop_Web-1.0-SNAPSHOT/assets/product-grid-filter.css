@@ -1,0 +1,255 @@
+/* 1. Layout Tổng thể */
+.collection-container {
+    display: flex;
+    gap: 3rem;
+    padding: 12rem 7% 5rem; /* Padding trên để tránh đè Header */
+    align-items: flex-start;
+    max-width: 100%;
+}
+
+/* 2. Fix lỗi Width rất lớn cho Grid */
+.product-content {
+    flex: 1;
+    min-width: 0; /* Đây là dòng 'ma thuật' để fix lỗi Grid phình to */
+}
+
+/* 3. Sidebar Bộ lọc */
+.filter-sidebar {
+    flex: 0 0 28rem; /* Cố định chiều rộng sidebar */
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.05);
+    position: sticky;
+    top: 10rem; /* Bám dính khi cuộn trang */
+    border: 1px solid #eee;
+}
+
+.filter-sidebar h3 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid orangered;
+    padding-bottom: 1rem;
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+}
+
+.filter-group h4 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.filter-group .filter-select {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.4rem;
+    border: 1px solid #ddd;
+    border-radius: .8rem;
+    background: #f9f9f9;
+    -webkit-appearance: none; /* Safari và Chrome */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;         /* Tiêu chuẩn */
+}
+.filter-group input {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.4rem;
+    border: 1px solid #ddd;
+    border-radius: .8rem;
+    background: #f9f9f9;
+}
+
+.filter-group input:focus {
+    border-color: orangered;
+    background: #fff;
+}
+
+/* 4. Results Info */
+.results-info {
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+    color: #444;
+}
+
+.results-info span {
+    color: orangered;
+    font-weight: bold;
+}
+
+/* 5. Grid Sản phẩm */
+.box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+    gap: 2.5rem;
+    width: 100%;
+}
+
+/* 6. Product Item Card */
+.product-item {
+    background: #fff;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-item:hover {
+    box-shadow: 0 1.5rem 3rem rgba(0,0,0,0.1);
+    transform: translateY(-0.5rem);
+}
+
+.product-item-picture {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.product-item--img {
+    width: 100%;
+    height: 22rem;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+/* Hiệu ứng Flip (Mô tả hiện khi hover) */
+.flip {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 69, 0, 0.38); /* Màu orangered có độ trong suốt */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    font-size: 1.4rem;
+    transform: translateY(100%); /* Giấu bên dưới */
+    transition: 0.5s;
+    border-radius: 1rem;
+}
+
+.product-item:hover .flip {
+    transform: translateY(0);
+}
+
+.product-item--name {
+    font-size: 2rem;
+    color: #333;
+    margin: 1.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 7. Giá và Nút bấm */
+.price {
+    font-size: 2.2rem;
+    color: orangered;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.price span {
+    font-size: 1.5rem;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 1rem;
+}
+
+button.plus-minus {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inbox {
+    width: 100%;
+    padding: 1.2rem;
+    background: #ff7e5f;
+    color: #fff;
+    border-radius: .8rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: none;
+}
+
+.noofitems {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.plus-minus {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: #eee;
+    border-radius: 50%;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 3.5rem;
+}
+
+/* 8. Phân trang (Pagination) */
+.pagination {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.page-link {
+    width: 4.5rem;
+    height: 4.5rem;
+    line-height: 4.5rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 1.6rem;
+    border-radius: 50%;
+    color: #333;
+}
+
+.page-link.active {
+    background: orangered;
+    color: #fff;
+    border-color: orangered;
+}
+
+.page-link:hover:not(.active) {
+    background: #fdf0f0;
+    color: orangered;
+}
+button.btn.submit {
+    background: #ea9481;
+    color: black;
+    width: 12em;
+    align-items: center;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 20px;
+}
+/* 9. Mobile Responsive */
+@media (max-width: 992px) {
+    .product-content {
+        width: 100%;
+    }
+    .collection-container {
+        flex-direction: column;
+    }
+    .filter-sidebar {
+        width: 100%;
+        position: static;
+        flex: none;
+    }
+}
