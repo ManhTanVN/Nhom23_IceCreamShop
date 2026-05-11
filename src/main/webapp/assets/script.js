@@ -190,7 +190,6 @@ function goToCheckout() {
     }
 
     // 2. Chuyển hướng người dùng đến trang checkout
-    // Bạn có thể tạo CheckoutServlet hoặc đơn giản là checkout.jsp
     window.location.href = `${safeContextPath}/checkout`;
 }
 // ==========================================
@@ -223,9 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 // 9. LOGIC INSTANT SEARCH (ISW)
 // ==========================================
-// Tách logic gọi API ra một hàm riêng để dùng chung cho cả 'onclick' và 'input'
-
-// Đưa hàm này ra ngoài Global để các thuộc tính onclick trong HTML String có thể gọi được
 function goToSearchPage(query) {
     const safeContextPath = typeof contextPath !== 'undefined' ? contextPath : "/IceCreamShop_Web";
     if (!query || query.trim() === "") return;
@@ -307,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
             });
 
-            // SỬA TẠI ĐÂY: Gọi đúng hàm goToSearchPage để có đủ params
             const queryValue = searchInput.value.replace(/'/g, "\\'"); // Tránh lỗi dấu nháy đơn
             html += `
                 <div class="isw-show-all" onclick="goToSearchPage('${queryValue}')">

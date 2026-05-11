@@ -29,11 +29,11 @@ public class HomeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // 2. Lấy 5 bài viết mới nhất (đã viết hàm getTop5Blogs ở turn trước)
+            // 2. Lấy 5 bài viết mới nhất 
             List<Blog> top5Blogs = blogDAO.getTop5Blogs();
             request.setAttribute("blogList", top5Blogs);
 
-            // 3. Lấy 5 sản phẩm mới nhất (đã viết hàm getTop5Products ở turn trước)
+            // 3. Lấy 5 sản phẩm mới nhất 
             List<Product> top5Products = productDAO.getTop5Products();
             request.setAttribute("productList", top5Products);
 
@@ -44,7 +44,7 @@ public class HomeServlet extends HttpServlet {
             // In lỗi ra console để debug nếu có vấn đề về Database
             System.out.println("Lỗi tại HomeServlet: " + e.getMessage());
             e.printStackTrace();
-            // Nếu lỗi nặng, vẫn cho về index nhưng có thể không có dữ liệu
+            // Nếu lỗi nặng, cho về index nhưng có thể không có dữ liệu
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }

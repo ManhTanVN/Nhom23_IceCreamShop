@@ -10,9 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap; // Thêm import này
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;     // Thêm import này
+import java.util.Map;    
 
 @WebServlet(name = "SearchServlet", urlPatterns = {"/api/search"})
 public class SearchServlet extends HttpServlet {
@@ -38,11 +38,10 @@ public class SearchServlet extends HttpServlet {
 
             ProductDAO dao = new ProductDAO();
             
-            // Logic 1: Lấy danh sách gợi ý (thường là 5 món từ hàm searchProductsByName của bạn)
+            // Logic 1: Lấy danh sách gợi ý 
             List<Product> list = dao.searchProductsByName(keyword);
             
             // Logic 2: Lấy TỔNG số lượng sản phẩm khớp với từ khóa trong DB
-            // Sử dụng hàm getTotalCount bạn đã viết trong ProductDAO
             int totalCount = dao.getTotalCount(keyword, null, null);
 
             // Bọc dữ liệu vào Map để trả về object {} thay vì array []

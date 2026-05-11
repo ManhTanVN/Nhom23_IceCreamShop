@@ -15,7 +15,7 @@ public class User {
         this.password = password;
     }
 
-    // Các hàm Getter/Setter (Bắt buộc phải có để CartServlet gọi được user.getId())
+    // Các hàm Getter/Setter
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

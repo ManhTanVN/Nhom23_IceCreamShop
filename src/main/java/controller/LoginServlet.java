@@ -71,14 +71,11 @@ public class LoginServlet extends HttpServlet {
                     int role = rs.getInt("role");
 
                     // 2. Tạo đối tượng User (model.User)
-                    // Giả sử constructor của bạn là: User(id, fullName, email, password)
                     model.User userForSession = new model.User(id, fullname, email, ""); 
 
                     // 3. Lưu vào Session với key là "user" để CartServlet có thể đọc được
                     HttpSession session = request.getSession();
                     session.setAttribute("user", userForSession); 
-
-                    // Vẫn giữ lại các attribute cũ nếu bạn đang dùng ở trang Admin
                     session.setAttribute("adminId", id);
                     session.setAttribute("userRole", role);
 

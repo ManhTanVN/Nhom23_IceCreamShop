@@ -11,7 +11,6 @@ public class CartDAO extends ProductDAO {
 
     public List<CartItem> getCartByUserId(int userId) {
         List<CartItem> list = new ArrayList<>();
-        // Thống nhất dùng product_name
         String sql = "SELECT * FROM cart_items WHERE user_id = ?";
         try (Connection conn = getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -21,7 +20,7 @@ public class CartDAO extends ProductDAO {
                 list.add(new CartItem(
                     rs.getInt("id"), 
                     rs.getInt("user_id"), 
-                    rs.getString("product_name"), // Khớp với DB
+                    rs.getString("product_name"), 
                     rs.getDouble("price"), 
                     rs.getString("image_url"), 
                     rs.getInt("quantity")
@@ -61,7 +60,6 @@ public class CartDAO extends ProductDAO {
     }
     
     public void updateQuantity(int userId, String name, int change) {
-        // PHẢI SỬA: "name = ?" thành "product_name = ?"
         String sql = "UPDATE cart_items SET quantity = quantity + ? WHERE user_id = ? AND product_name = ?";
         try (Connection conn = getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -76,7 +74,6 @@ public class CartDAO extends ProductDAO {
             System.out.println("DEBUG CART: Rows updated: " + rowsUpdated);
 
             if (rowsUpdated > 0) {
-                // PHẢI SỬA: "name = ?" thành "product_name = ?"
                 String deleteSql = "DELETE FROM cart_items WHERE user_id = ? AND product_name = ? AND quantity <= 0";
                 try (PreparedStatement psDel = conn.prepareStatement(deleteSql)) {
                     psDel.setInt(1, userId);
@@ -88,7 +85,6 @@ public class CartDAO extends ProductDAO {
     }
 
     public void deleteCartItem(int userId, String name) {
-        // PHẢI SỬA: "name = ?" thành "product_name = ?"
         String sql = "DELETE FROM cart_items WHERE user_id = ? AND product_name = ?";
         try (Connection conn = getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)) {

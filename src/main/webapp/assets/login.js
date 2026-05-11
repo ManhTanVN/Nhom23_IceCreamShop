@@ -46,4 +46,4 @@ function handleLogout() {
     } catch (error) {
         console.error("Lỗi khi load Profile:", error);
     }
-})(); // Thêm ngoặc () để hàm này tự kích hoạt ngay lập tức!
+})(); 

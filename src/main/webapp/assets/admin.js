@@ -94,7 +94,7 @@ function prepareEdit(id) {
         return;
     }
 
-    // 2. Đổ dữ liệu vào Form (Dùng cách này cực kỳ an toàn, không lo dấu nháy)
+    // 2. Đổ dữ liệu vào Form 
     document.getElementById('form-title').innerText = "Sửa Món Kem #" + product.id;
     document.getElementById('pro-id').value = product.id;
     document.getElementById('pro-name').value = product.name;

@@ -74,7 +74,7 @@ public class ProductDAO {
         if (maxPrice != null) sql.append("AND price <= ? ");
         
         // 2. Sorting logic
-        sql.append("ORDER BY "); // Viết sẵn từ khóa ORDER BY ở đây
+        sql.append("ORDER BY "); 
 
         String sortOrder = "id DESC"; // Mặc định nếu không khớp case nào
         if (sort != null && !sort.isEmpty()) {

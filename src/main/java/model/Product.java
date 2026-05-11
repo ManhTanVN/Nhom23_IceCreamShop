@@ -4,7 +4,7 @@ public class Product {
     private int id;
     private String name;
     private double price;
-    private double original_price; // Thêm thuộc tính này
+    private double original_price; 
     private String image_url;
     private String description;
     private String handle;

@@ -21,7 +21,7 @@ public class CollectionPageServlet extends HttpServlet {
             throws ServletException, IOException {
         
         // 1. Lấy các tham số từ URL
-        String search = request.getParameter("q"); // Từ ô tìm kiếm
+        String search = request.getParameter("q");
         String minPStr = request.getParameter("minPrice");
         String maxPStr = request.getParameter("maxPrice");
         String pageStr = request.getParameter("page");
@@ -54,7 +54,7 @@ public class CollectionPageServlet extends HttpServlet {
         request.setAttribute("totalProducts", totalProducts);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", currentPage);
-        request.setAttribute("searchQuery", search); // Gửi lại để hiển thị trong ô input
+        request.setAttribute("searchQuery", search);
         request.setAttribute("currentSort", sort);
         
         request.setAttribute("pageTitle", (search != null && !search.isEmpty()) ? "Kết quả tìm kiếm cho: " + search : "Tất cả sản phẩm kem");
